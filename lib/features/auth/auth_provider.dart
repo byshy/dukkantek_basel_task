@@ -17,6 +17,8 @@ import '../../utils_and_services/global_widgets/error_dialog.dart';
 import '../../utils_and_services/routing/navigation_service.dart';
 import '../../utils_and_services/routing/routes.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
+
 class AuthProvider with ChangeNotifier {
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
@@ -102,5 +104,30 @@ class AuthProvider with ChangeNotifier {
   Future<void> postAuth({required User value}) async {
     sl<LocalRepo>().setUser(value);
     refreshToken();
+  }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
+  Future<void> handleSignIn() async {
+    try {
+      GoogleSignInAccount? account = await _googleSignIn.signIn();
+
+      postAuth(
+        value: User(
+          accessToken: '1234',
+          userInfo: UserInfo(
+            name: account?.displayName,
+          ),
+        ),
+      );
+      sl<NavigationService>().navigateToAndRemove(homeScreen);
+    } catch (error) {
+      print(error);
+    }
   }
 }

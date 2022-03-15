@@ -136,6 +136,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
               ),
+              const SizedBox(height: 15),
+              CustomRaisedButton(
+                onTap: instance.handleSignIn,
+                child: const Text(
+                  'Google',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
               const SizedBox(height: 40),
             ],
           );
